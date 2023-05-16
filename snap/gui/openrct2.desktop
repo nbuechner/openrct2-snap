@@ -2,6 +2,6 @@
 Encoding=UTF-8
 Type=Application
 Terminal=false
-Exec=openrct2.openrct2
+Exec=openrct2-unofficial.openrtc2
 Name=OpenRCT2
 Icon=${SNAP}/meta/gui/openrct2.png

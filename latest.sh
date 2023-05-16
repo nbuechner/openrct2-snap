@@ -12,4 +12,3 @@ if [[ "$VERSION" != "$LOCAL_VERSION" ]]; then
 else
    echo "no update available. current version is $VERSION"
 fi
-#SNAPCRAFT_BUILD_ENVIRONMENT=host snapcraft --target-arch amd64
