@@ -23,7 +23,7 @@ architectures:
 apps:
   openrtc2:
     command: /openrct2.sh
-    plugs: [home, x11, desktop, removable-media, network, audio-playback ]
+    plugs: [home, x11, desktop, removable-media, network, audio-playback, opengl ]
     extensions: [ gnome ]
 
   openrtc2-cli:
@@ -72,7 +72,10 @@ parts:
 layout:
   /usr/share/zenity:
     bind: $SNAP/usr/share/zenity
-
+  /usr/lib/$SNAPCRAFT_ARCH_TRIPLET/libGLX_nvidia.so.0:
+    symlink: $SNAP/usr/lib/$SNAPCRAFT_ARCH_TRIPLET/libGLX_nvidia.so.0
+  /usr/share/libdrm:
+    bind: $SNAP/usr/share/libdrm
 lint:
   ignore:
     - library
