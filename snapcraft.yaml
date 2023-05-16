@@ -22,12 +22,12 @@ architectures:
 
 apps:
   openrtc2:
-    command: /openrct2.sh
+    command: ./bin/openrct2.sh
     plugs: [home, x11, desktop, removable-media, network, audio-playback, opengl ]
     extensions: [ gnome ]
 
   openrtc2-cli:
-    command: /openrct2-cli.sh
+    command: ./bin/openrct2-cli.sh
     plugs: [home, removable-media, network]
 
 plugs:
@@ -53,6 +53,8 @@ parts:
       - aria2
       - unzip
     override-build: |
+      mkdir -p bin/
+      cd bin
       echo "#!/bin/sh" >  openrct2.sh
       echo "if [ ! -d \$SNAP_USER_COMMON/RCT/ObjData ]; then" >> openrct2.sh
       echo "  mkdir -p \$SNAP_USER_COMMON/RCT" >> openrct2.sh
@@ -67,6 +69,7 @@ parts:
       echo "\$SNAP/openrct2-cli --rct2-data-path=\$SNAP_USER_COMMON/RCT" >> openrct2-cli.sh
       chmod a+rx openrct2-cli.sh
       chmod a+rx openrct2.sh
+      cd ..
       craftctl default
 
 layout:
