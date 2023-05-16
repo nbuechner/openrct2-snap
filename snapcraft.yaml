@@ -1,0 +1,87 @@
+name: openrct2
+base: core22
+version: 0.4.5
+summary: OpenRCT2 is an open-source re-implementation of RollerCoaster Tycoon 2 (RCT2)
+description: |
+    OpenRCT2 is expanding the game with new features, fixing bugs and raising game limits.
+    The gameplay revolves around building and maintaining an amusement park containing attractions, shops and facilities.
+    The player must try to make a profit and maintain a good park reputation whilst keeping the guests happy.
+    OpenRCT2 allows for both scenario and sandbox play.
+    Scenarios require the player to complete a certain objective in a set time limit whilst sandbox allows the player to build a more flexible park with optionally no restrictions or finance.
+
+    Files required for the game will be downloaded to ~/snap/openrct2/common/RCT on first launch.
+
+    Source: https://github.com/OpenRCT2/OpenRCT2/
+    Snap-Source: https://github.com/nbuechner/openrtc2-snap
+
+grade: stable
+confinement: strict
+architectures:
+  - build-on: amd64
+    build-for: amd64
+
+apps:
+  openrtc2:
+    command: /openrct2.sh
+    plugs: [home, x11, desktop, removable-media, network, audio-playback ]
+    extensions: [ gnome ]
+
+  openrtc2-cli:
+    command: /openrct2-cli.sh
+    plugs: [home, removable-media, network]
+
+plugs:
+  shared-memory:
+    private: true
+
+parts:
+  main:
+    source: https://github.com/OpenRCT2/OpenRCT2/releases/download/v$SNAPCRAFT_PROJECT_VERSION/OpenRCT2-$SNAPCRAFT_PROJECT_VERSION-linux-jammy-x86_64.tar.gz
+    #source: http://192.168.1.59:8000/OpenRCT2-$SNAPCRAFT_PROJECT_VERSION-linux-jammy-x86_64.tar.gz
+    plugin: dump
+    source-type: tar
+    stage-packages:
+      - libcurl4
+      - libzip4
+      - libsdl2-2.0-0
+      - libspeexdsp1
+  scripts:
+    after: [main]
+    source: .
+    plugin: dump
+    stage-packages:
+      - zenity
+      - aria2
+      - unzip
+    override-build: |
+      echo "#!/bin/sh" >  openrct2.sh
+      echo "if [ ! -d \$SNAP_USER_COMMON/RCT/ObjData ]; then" >> openrct2.sh
+      echo "  mkdir -p \$SNAP_USER_COMMON/RCT" >> openrct2.sh
+      echo "  cd \$SNAP_USER_COMMON" >> openrct2.sh
+      echo "  aria2c https://archive.org/download/OpenRCT2Assets/RCT.zip -j6 -x6 --summary-interval=10 | grep -E --line-buffered -o '\([0-9]+%\)' | sed -u 's/[^0-9]//g' | zenity --text='Downloading game files. Please wait.' --progress --percentage=0 --auto-close --auto-kill --title='Download required'" >> openrct2.sh
+      echo "  rm -Rf RCT " >> openrct2.sh
+      echo "  unzip RCT.zip " >> openrct2.sh
+      echo "  rm -f RCT.zip " >> openrct2.sh
+      echo "fi" >> openrct2.sh
+      echo "\$SNAP/openrct2 --rct2-data-path=\$SNAP_USER_COMMON/RCT" >> openrct2.sh
+      echo "#!/bin/sh" >  openrct2-cli.sh
+      echo "\$SNAP/openrct2-cli --rct2-data-path=\$SNAP_USER_COMMON/RCT" >> openrct2-cli.sh
+      chmod a+rx openrct2-cli.sh
+      chmod a+rx openrct2.sh
+      craftctl default
+  #data:
+  #  after: [scripts]
+  #  #source: https://archive.org/download/OpenRCT2Assets/RCT.zip
+  #  source: http://192.168.1.59:8000/RCT.zip
+  #  source-type: zip
+  #  plugin: dump
+
+layout:
+  /usr/share/zenity:
+    bind: $SNAP/usr/share/zenity
+
+lint:
+  ignore:
+    - library
+    - classic
+

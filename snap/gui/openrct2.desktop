@@ -1,0 +1,7 @@
+[Desktop Entry]
+Encoding=UTF-8
+Type=Application
+Terminal=false
+Exec=openrct2.openrct2
+Name=OpenRCT2
+Icon=${SNAP}/meta/gui/openrct2.png
