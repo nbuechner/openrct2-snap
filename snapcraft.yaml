@@ -22,20 +22,17 @@ architectures:
 
 apps:
   openrtc2:
-    command: ./bin/openrct2.sh
+    command: bin/openrct2.sh
     plugs: [home, x11, desktop, removable-media, network, audio-playback, opengl ]
     extensions: [ gnome ]
 
   openrtc2-cli:
-    command: ./bin/openrct2-cli.sh
+    command: bin /openrct2-cli.sh
     plugs: [home, removable-media, network]
-
-plugs:
-  shared-memory:
-    private: true
 
 parts:
   main:
+    after: [prepare]
     source: https://github.com/OpenRCT2/OpenRCT2/releases/download/v$SNAPCRAFT_PROJECT_VERSION/OpenRCT2-$SNAPCRAFT_PROJECT_VERSION-linux-jammy-x86_64.tar.gz
     plugin: dump
     source-type: tar
@@ -44,8 +41,7 @@ parts:
       - libzip4
       - libsdl2-2.0-0
       - libspeexdsp1
-  scripts:
-    after: [main]
+  prepare:
     source: .
     plugin: dump
     stage-packages:
@@ -59,16 +55,31 @@ parts:
       echo "if [ ! -d \$SNAP_USER_COMMON/RCT/ObjData ]; then" >> openrct2.sh
       echo "  mkdir -p \$SNAP_USER_COMMON/RCT" >> openrct2.sh
       echo "  cd \$SNAP_USER_COMMON" >> openrct2.sh
+      echo "  rm -f RCT*.zip " >> openrct2-cli.sh
       echo "  aria2c https://archive.org/download/OpenRCT2Assets/RCT.zip -j6 -x6 --summary-interval=10 | grep -E --line-buffered -o '\([0-9]+%\)' | sed -u 's/[^0-9]//g' | zenity --text='Downloading game files. Please wait.' --progress --percentage=0 --auto-close --auto-kill --title='Download required'" >> openrct2.sh
       echo "  rm -Rf RCT " >> openrct2.sh
       echo "  unzip RCT.zip " >> openrct2.sh
       echo "  rm -f RCT.zip " >> openrct2.sh
       echo "fi" >> openrct2.sh
       echo "\$SNAP/openrct2 --rct2-data-path=\$SNAP_USER_COMMON/RCT" >> openrct2.sh
-      echo "#!/bin/sh" >  openrct2-cli.sh
-      echo "\$SNAP/openrct2-cli --rct2-data-path=\$SNAP_USER_COMMON/RCT" >> openrct2-cli.sh
-      chmod a+rx openrct2-cli.sh
+      echo "exit 0" >> openrct2.sh
       chmod a+rx openrct2.sh
+
+      echo "#!/bin/sh" >  openrct2-cli.sh
+      echo "if [ ! -d \$SNAP_USER_COMMON/RCT/ObjData ]; then" >> openrct2-cli.sh
+      echo "  mkdir -p \$SNAP_USER_COMMON/RCT" >> openrct2-cli.sh
+      echo "  echo \"Downloading missig game files. Please wait...\"" >> openrct2-cli.sh
+      echo "  cd \$SNAP_USER_COMMON" >> openrct2-cli.sh
+      echo "  rm -f RCT*.zip " >> openrct2-cli.sh
+      echo "  aria2c https://archive.org/download/OpenRCT2Assets/RCT.zip -summary-interval=0 -j6 -x6" >> openrct2-cli.sh
+      echo "  rm -Rf RCT " >> openrct2-clu.sh
+      echo "  unzip RCT.zip " >> openrct2-cli.sh
+      echo "  rm -f RCT.zip " >> openrct2-cli.sh
+      echo "fi" >> openrct2-cli.sh
+      echo "\$SNAP/openrct2-cli --rct2-data-path=\$SNAP_USER_COMMON/RCT" >> openrct2-cli.sh
+      echo "exit 0" >> openrct2-cli.sh
+      chmod a+rx openrct2-cli.sh
+
       cd ..
       craftctl default
 
@@ -81,6 +92,5 @@ layout:
     bind: $SNAP/usr/share/libdrm
 lint:
   ignore:
-    - library
     - classic
-
+    - library
