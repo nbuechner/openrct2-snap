@@ -1,6 +1,10 @@
 #!/bin/bash
 URL=$(curl -s https://api.github.com/repos/OpenRCT2/OpenRCT2/releases/latest | jq '.assets[] | select(.name|endswith("-linux-jammy-x86_64.tar.gz")) | .browser_download_url' | tr -d '"')
 VERSION=$(echo $URL|cut -d'/' -f8|tr -d '-'|cut -c2-)
+if [[ "$VERSION" == "" ]]; then
+   echo "ERROR: could not fetch latest version"
+   exit 1
+fi
 LOCAL_VERSION=$(cat snapcraft.yaml|grep "version: "|cut -d" " -f2)
 if [[ "$VERSION" != "$LOCAL_VERSION" ]]; then
    echo "local and remove versions differ"

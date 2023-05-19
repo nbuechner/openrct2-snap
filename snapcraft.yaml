@@ -2,6 +2,7 @@ name: openrct2-unofficial
 base: core22
 version: 0.4.5
 summary: OpenRCT2 is an open-source re-implementation of RollerCoaster Tycoon 2 (RCT2)
+compression: lzo
 description: |
     OpenRCT2 is expanding the game with new features, fixing bugs and raising game limits.
     The gameplay revolves around building and maintaining an amusement park containing attractions, shops and facilities.
@@ -33,14 +34,37 @@ apps:
 parts:
   main:
     after: [prepare]
-    source: https://github.com/OpenRCT2/OpenRCT2/releases/download/v$SNAPCRAFT_PROJECT_VERSION/OpenRCT2-$SNAPCRAFT_PROJECT_VERSION-linux-jammy-x86_64.tar.gz
-    plugin: dump
+    source: https://github.com/OpenRCT2/OpenRCT2/archive/refs/tags/v$SNAPCRAFT_PROJECT_VERSION.tar.gz
+    plugin: cmake
     source-type: tar
+    cmake-parameters:
+      - -DCMAKE_INSTALL_PREFIX=/usr
+    build-packages:
+      - libsdl2-dev
+      - libicu-dev
+      - libspeex-dev
+      - libspeexdsp-dev
+      - libcurl4-openssl-dev
+      - libcrypto++-dev
+      - libfontconfig1-dev
+      - libfreetype6-dev
+      - libpng-dev
+      - libssl-dev
+      - libzip-dev
+      - nlohmann-json3-dev
+      - libbenchmark-dev
+      - libflac-dev
+      - libvorbis-dev
     stage-packages:
       - libcurl4
       - libzip4
       - libsdl2-2.0-0
       - libspeexdsp1
+      - libbenchmark1
+      - libflac8
+      - libgzstream0
+      - libpng16-16
+      - libssl3
   prepare:
     source: .
     plugin: dump
@@ -61,7 +85,7 @@ parts:
       echo "  unzip RCT.zip " >> openrct2.sh
       echo "  rm -f RCT.zip " >> openrct2.sh
       echo "fi" >> openrct2.sh
-      echo "\$SNAP/openrct2 --rct2-data-path=\$SNAP_USER_COMMON/RCT" >> openrct2.sh
+      echo "\$SNAP/usr/bin/openrct2 --rct2-data-path=\$SNAP_USER_COMMON/RCT" >> openrct2.sh
       echo "exit 0" >> openrct2.sh
       chmod a+rx openrct2.sh
 
@@ -76,7 +100,7 @@ parts:
       echo "  unzip RCT.zip " >> openrct2-cli.sh
       echo "  rm -f RCT.zip " >> openrct2-cli.sh
       echo "fi" >> openrct2-cli.sh
-      echo "\$SNAP/openrct2-cli --rct2-data-path=\$SNAP_USER_COMMON/RCT" >> openrct2-cli.sh
+      echo "\$SNAP/usr/bin/openrct2-cli --rct2-data-path=\$SNAP_USER_COMMON/RCT" >> openrct2-cli.sh
       echo "exit 0" >> openrct2-cli.sh
       chmod a+rx openrct2-cli.sh
 
