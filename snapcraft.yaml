@@ -1,8 +1,8 @@
 name: openrct2-unofficial
 base: core22
-version: 0.4.5
+version: 0.4.6
 summary: OpenRCT2 is an open-source re-implementation of RollerCoaster Tycoon 2 (RCT2)
-compression: lzo
+compression: xz
 description: |
     OpenRCT2 is expanding the game with new features, fixing bugs and raising game limits.
     The gameplay revolves around building and maintaining an amusement park containing attractions, shops and facilities.
@@ -25,10 +25,10 @@ apps:
   openrtc2:
     command: bin/openrct2.sh
     plugs: [home, x11, desktop, removable-media, network, audio-playback, opengl ]
-    extensions: [ gnome ]
+    #extensions: [ gnome ]
 
   openrtc2-cli:
-    command: bin /openrct2-cli.sh
+    command: bin/openrct2-cli.sh
     plugs: [home, removable-media, network]
 
 parts:
@@ -38,7 +38,7 @@ parts:
     plugin: cmake
     source-type: tar
     cmake-parameters:
-      - -DCMAKE_INSTALL_PREFIX=/usr
+      - -DCMAKE_INSTALL_PREFIX=/usr -DCMAKE_BUILD_TYPE=Release
     build-packages:
       - libsdl2-dev
       - libicu-dev
