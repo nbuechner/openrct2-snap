@@ -1,5 +1,5 @@
 name: openrct2-unofficial
-base: core22
+base: core24
 version: 0.4.12
 summary: OpenRCT2 is an open-source re-implementation of RollerCoaster Tycoon 2 (RCT2)
 compression: xz
@@ -17,15 +17,16 @@ description: |
 
 grade: stable
 confinement: strict
-architectures:
-  - build-on: amd64
+platforms:
+  amd64:
+    build-on: amd64
     build-for: amd64
 
 apps:
   openrtc2:
     command: bin/openrct2.sh
     plugs: [home, x11, desktop, removable-media, network, audio-playback, opengl ]
-    #extensions: [ gnome ]
+    extensions: [ gnome ]
 
   openrtc2-cli:
     command: bin/openrct2-cli.sh
@@ -60,11 +61,12 @@ parts:
       - libzip4
       - libsdl2-2.0-0
       - libspeexdsp1
-      - libbenchmark1
-      - libflac8
+      - libbenchmark1.8.3
+      - libflac++10
       - libgzstream0
       - libpng16-16
       - libssl3
+      - libvorbisfile3
   prepare:
     source: .
     plugin: dump
@@ -110,8 +112,8 @@ parts:
 layout:
   /usr/share/zenity:
     bind: $SNAP/usr/share/zenity
-  /usr/lib/$SNAPCRAFT_ARCH_TRIPLET/libGLX_nvidia.so.0:
-    symlink: $SNAP/usr/lib/$SNAPCRAFT_ARCH_TRIPLET/libGLX_nvidia.so.0
+  /usr/lib/$CRAFT_ARCH_TRIPLET_BUILD_FOR/libGLX_nvidia.so.0:
+    symlink: $SNAP/usr/lib/$CRAFT_ARCH_TRIPLET_BUILD_FOR/libGLX_nvidia.so.0
   /usr/share/libdrm:
     bind: $SNAP/usr/share/libdrm
 lint:
