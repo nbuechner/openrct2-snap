@@ -107,7 +107,12 @@ parts:
       chmod a+rx openrct2-cli.sh
 
       cd ..
+
       craftctl default
+
+      /usr/bin/rm -f $CRAFT_PART_INSTALL/usr/lib/x86_64-linux-gnu/libsasl2.so.2.0.25
+      /usr/bin/rm -f $CRAFT_PART_INSTALL/usr/lib/x86_64-linux-gnu/sasl2/libsasldb.so.2.0.25
+      /usr/bin/rm -f $CRAFT_PART_INSTALL/usr/share/doc/libsasl2-modules-db/changelog.Debian.gz
 
 layout:
   /usr/share/zenity:
