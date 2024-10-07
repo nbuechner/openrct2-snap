@@ -1,5 +1,5 @@
 #!/bin/bash
-URL=$(curl -s https://api.github.com/repos/OpenRCT2/OpenRCT2/releases/latest | jq '.assets[] | select(.name|endswith("-linux-jammy-x86_64.tar.gz")) | .browser_download_url' | tr -d '"')
+URL=$(curl -s https://api.github.com/repos/OpenRCT2/OpenRCT2/releases/latest | jq '.assets[] | select(.name|endswith("-Linux-noble-x86_64.tar.gz")) | .browser_download_url' | tr -d '"')
 VERSION=$(echo $URL|cut -d'/' -f8|tr -d '-'|cut -c2-)
 if [[ "$VERSION" == "" ]]; then
    echo "ERROR: could not fetch latest version"
