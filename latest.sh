@@ -11,7 +11,7 @@ if [[ "$VERSION" != "$LOCAL_VERSION" ]]; then
    echo "old version: $LOCAL_VERSION"
    echo "new version: $VERSION"
    sed -i "/^\([[:space:]]*version: \).*/s//\1$VERSION/" snapcraft.yaml
-   echo "git commit -a -m 'version update: $VERSION'"
+   echo "git commit -a -m version update: $VERSION"
    echo "git push"
    git commit -a -m 'version update: $VERSION'
    git push
