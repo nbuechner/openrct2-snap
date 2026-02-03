@@ -110,9 +110,10 @@ parts:
 
       craftctl default
 
-      /usr/bin/rm -f $CRAFT_PART_INSTALL/usr/lib/x86_64-linux-gnu/libsasl2.so.2.0.25
-      /usr/bin/rm -f $CRAFT_PART_INSTALL/usr/lib/x86_64-linux-gnu/sasl2/libsasldb.so.2.0.25
-      /usr/bin/rm -f $CRAFT_PART_INSTALL/usr/share/doc/libsasl2-modules-db/changelog.Debian.gz
+      /usr/bin/rm -f $CRAFT_PART_INSTALL/usr/lib/x86_64-linux-gnu/liblber.so.2.0.200
+      /usr/bin/rm -f $CRAFT_PART_INSTALL/usr/lib/x86_64-linux-gnu/libldap.so.2.0.200
+      /usr/bin/rm -f $CRAFT_PART_INSTALL/usr/lib/x86_64-linux-gnu/libxml2.so.2.9.14
+      /usr/bin/rm -rf $CRAFT_PART_INSTALL/usr/share/doc/*
 
 layout:
   /usr/share/zenity:
