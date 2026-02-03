@@ -1,6 +1,6 @@
 name: openrct2-unofficial
 base: core24
-version: 0.4.30
+version: 0.4.31
 summary: OpenRCT2 is an open-source re-implementation of RollerCoaster Tycoon 2 (RCT2)
 compression: xz
 description: |
