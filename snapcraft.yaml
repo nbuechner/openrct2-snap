@@ -43,8 +43,6 @@ parts:
     build-packages:
       - libsdl2-dev
       - libicu-dev
-      - libspeex-dev
-      - libspeexdsp-dev
       - libcurl4-openssl-dev
       - libcrypto++-dev
       - libfontconfig1-dev
@@ -60,7 +58,6 @@ parts:
       - libcurl4
       - libzip4
       - libsdl2-2.0-0
-      - libspeexdsp1
       - libbenchmark1.8.3
       - libflac++10
       - libgzstream0
