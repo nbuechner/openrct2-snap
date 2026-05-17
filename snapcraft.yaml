@@ -110,6 +110,7 @@ parts:
       /usr/bin/rm -f $CRAFT_PART_INSTALL/usr/lib/x86_64-linux-gnu/liblber.so.2.0.200
       /usr/bin/rm -f $CRAFT_PART_INSTALL/usr/lib/x86_64-linux-gnu/libldap.so.2.0.200
       /usr/bin/rm -f $CRAFT_PART_INSTALL/usr/lib/x86_64-linux-gnu/libxml2.so.2.9.14
+      /usr/bin/rm -f $CRAFT_PART_INSTALL/usr/lib/x86_64-linux-gnu/libnghttp2.so.14.26.0
       /usr/bin/rm -rf $CRAFT_PART_INSTALL/usr/share/doc/*
 
 layout:
